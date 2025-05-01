@@ -13,12 +13,13 @@ class TravelOrdersSeeder extends Seeder
      */
     public function run(): void
     {
-        TravelOrders::factory()->create([
-            'customer_name' => 'Teste Iago',
-            'destiny' => 'Austrália',
-            'start_date' => date_create(),
-            'return_date' => date_create(),
-            'status' => 'Approved'
-        ]);
+        // TravelOrders::factory()->create([
+        //     'customer_name' => 'Viagem teste',
+        //     'destiny' => 'Australia',
+        //     'start_date' => date_create(),
+        //     'return_date' => date_create(),
+        //     'status' => 'Approved',
+        //     'user_id' => 1
+        // ]);
     }
 }

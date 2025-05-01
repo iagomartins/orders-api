@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
-use App\Models\Users;
-use Illuminate\Http\Request;
+use App\Models\User;
+use App\Http\Requests\StoreUserRequest;
 
 class UserController extends Controller
 {
@@ -13,54 +13,37 @@ class UserController extends Controller
      */
     public function index()
     {
-        return Users::all();
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
+        return User::all();
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreUserRequest $request)
     {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(Users $users)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Users $users)
-    {
-        //
+        $user = User::create($request->all());
+        return [
+            'message'=> 'User created successfully!'
+        ];
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Users $users)
+    public function update(StoreUserRequest $request, User $users)
     {
-        //
+        $user = $users->update($request->all());
+        return [
+            'message'=> 'User updated successfully!'
+        ];
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Users $users)
-    {
-        //
+    public function createAccessToken(StoreUserRequest $request) {
+        $data = $request->all();
+        $user= User::where('email', '=', $data['email'])->first();
+
+        if ($user['name'] == 'Admin') {
+            return $user->createToken('token')->plainTextToken;
+        }
     }
 }

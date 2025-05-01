@@ -10,5 +10,5 @@ class TravelOrders extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['customer_name', 'destiny', 'start_date', 'return_date', 'status'];
+    protected $fillable = ['customer_name', 'destiny', 'start_date', 'return_date', 'status', 'user_id'];
 }

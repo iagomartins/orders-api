@@ -25,7 +25,8 @@ class TravelOrdersFactory extends Factory
             'destiny' => $this->faker->destiny(),
             'start_date' => $this->faker->start_date(),
             'return_date' => $this->faker->return_date(),
-            'status' => $this->faker->status()
+            'status' => $this->faker->status(),
+            'user_id' => $this->faker->user_id()
         ];
     }
 }

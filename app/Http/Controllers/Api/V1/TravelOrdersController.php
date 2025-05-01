@@ -80,10 +80,6 @@ class TravelOrdersController extends Controller
     public function showOrdersByFilters(StoreTravelOrdersRequest $request) {
         $filters = $request->all();
 
-        // $destination = $filters['destination'];
-        // $start_date = $filters['start_date'];
-        // $end_date = $filters['end_date'];
-
         $travel_orders = [];
 
         if ($filters['destination'] == '') {
@@ -93,6 +89,14 @@ class TravelOrdersController extends Controller
         } else {
             $travel_orders = TravelOrders::where('destiny', '=',  $filters['destination'])->whereBetween('created_at', [date_create($filters['start_date']), date_create($filters['end_date'])])->get();
         }
+
+        return $travel_orders;
+    }
+
+    public function showOrdersByUser(StoreTravelOrdersRequest $request) {
+        $filters = $request->all();
+
+        $travel_orders = TravelOrders::where('user_id', '=',  $filters['user_id']);
 
         return $travel_orders;
     }
