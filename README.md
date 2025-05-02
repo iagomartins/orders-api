@@ -1,61 +1,99 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+## Instalações necessárias:
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+- WSL (Windows).
+- Docker.
 
-## About Laravel
+## Comandos utilizados
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+- Rodar o projeto: ./vendor/bin/sail up -d
+- Rodar migrations e criar usuário admin: ./vendor/bin/sail artisan migrate:fresh --seed
+- Listar rotas da API: ./vendor/bin/sail artisan route:list
+- Rodar unit tests: ./vendor/bin/sail artisan test
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Token de acesso
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+- Para fazer requisições (exceto a de autenticação) utilize o header Authorization.
+- No preenchimento do header adicione a palavra Bearer antes do token de acesso.
 
-## Learning Laravel
+## Lista de rotas da API
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+  POST            api/authenticate ........................................... Api\V1\UserController@createAccessToken
+  - Cria o token de acesso para a API.
+    body: {
+        "email":"admin@admin.com",
+        "password": "password"
+    }
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+  POST            api/v1/filterOrders .............................. Api\V1\TravelOrdersController@showOrdersByFilters
+  - Traz os pedidos de viagens baseado nos filtros.
+    body: {
+        "destination": "Brasil",
+        "start_date": "2025/03/05",
+        "end_date": "2025/05/08"
+    }
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+  GET|HEAD        api/v1/notifications ................ notifications.index › Api\V1\UserNotificationsController@index
+  - Traz todas as notificações criadas.
 
-## Laravel Sponsors
+  POST            api/v1/notifications ................ notifications.store › Api\V1\UserNotificationsController@store
+  - Cria uma notificação atrelada a um id de usuário.
+    body: {
+        "user_id": 1,
+        "message": "Test notify"
+    }
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+  GET|HEAD        api/v1/notifications/{notification} ... notifications.show › Api\V1\UserNotificationsController@show
+  - Traz a notificação pelo id.
+  DELETE          api/v1/notifications/{notification} notifications.destroy › Api\V1\UserNotificationsController@dest…
+  - Deleta a notificação pelo id.
 
-### Premium Partners
+  GET|HEAD        api/v1/orders ................................... orders.index › Api\V1\TravelOrdersController@index
+  - Lista todos os pedidos de viagem.
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development/)**
-- **[Active Logic](https://activelogic.com)**
+  POST            api/v1/orders ................................... orders.store › Api\V1\TravelOrdersController@store
+  - Cria um pedido de viagem.
+    body: {
+        "customer_name": "Usuário 2",
+        "destiny": "Brasil",
+        "start_date": "2025/05/05",
+        "return_date": "2025/05/08",
+        "status": "Cancelled",
+        "user_id": 1
+    }
 
-## Contributing
+  PUT|PATCH       api/v1/orders/{order} ......................... orders.update › Api\V1\TravelOrdersController@update
+  - Edita um pedido de viagem pelo id.
+    body: {
+        "customer_name": "Usuário 2",
+        "destiny": "Brasil",
+        "start_date": "2025/05/05",
+        "return_date": "2025/05/08",
+        "status": "Cancelled",
+        "user_id": 1
+    }
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+  POST            api/v1/ordersByUser ................................. Api\V1\TravelOrdersController@showOrdersByUser
+  - Lista todos os pedidos de viagem de um usuário específico.
+    body: {
+        "user_id": 1
+    }
 
-## Code of Conduct
+  POST            api/v1/showUserNotifications ............. Api\V1\UserNotificationsController@getNotificationsByUser
+  - Lista todas as notificações de um usuário específico.
+    body: {
+        "user_id": 1
+    }
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+  POST            api/v1/userLogin ....................................................... Api\V1\UserController@login
+  - Faz uma solicitação de login recebendo usuário e senha.
+    body: {
+        "email":"admin@admin.com",
+        "password": "password"
+    }
 
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+  POST            api/v1/users ............................................. users.store › Api\V1\UserController@store
+  - Cria um novo usuário.
+    body: {
+        "email":"admin@admin.com",
+        "password": "password"
+    }
