@@ -95,9 +95,17 @@ class TravelOrdersController extends Controller
 
     public function showOrdersByUser(StoreTravelOrdersRequest $request) {
         $filters = $request->all();
+        $id = $filters['user_id'];
 
-        $travel_orders = TravelOrders::where('user_id', '=',  $filters['user_id']);
+        $travel_orders = TravelOrders::all();
+        $filtered = [];
 
-        return $travel_orders;
+        for ($i = 0; $i < count($travel_orders); $i++) { 
+            if ($travel_orders[$i]['user_id'] == $id) {
+                $filtered[] = $travel_orders[$i];
+            }
+        }
+
+        return $filtered;
     }
 }

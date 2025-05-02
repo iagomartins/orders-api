@@ -42,8 +42,20 @@ class UserController extends Controller
         $data = $request->all();
         $user= User::where('email', '=', $data['email'])->first();
 
-        if ($user['name'] == 'Admin') {
+        if ($user['name'] == 'Admin' && password_verify($data['password'], $user['password'])) {
             return $user->createToken('token')->plainTextToken;
+        }
+    }
+
+    public function Login(StoreUserRequest $request) {
+        $data = $request->all();
+        $user= User::where('email', '=', $data['email'])->first();
+
+        if (password_verify($data['password'], $user['password'])) {
+            return [
+                'message'=> 'Login successful!',
+                'user' => $user,
+            ];
         }
     }
 }

@@ -46,7 +46,7 @@ class UserNotificationsController extends Controller
         $userNotifications->delete();
     }
 
-    public function getNotificationsByUser(Request $request) {
+    public function getNotificationsByUser(StoreUserNotificationsRequest $request) {
         $userNotifications = UserNotifications::where('user_id','=', $request->user_id)->get();
         return $userNotifications;
     }
