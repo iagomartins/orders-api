@@ -44,6 +44,7 @@
 
   GET|HEAD        api/v1/notifications/{notification} ... notifications.show › Api\V1\UserNotificationsController@show
   - Traz a notificação pelo id.
+  
   DELETE          api/v1/notifications/{notification} notifications.destroy › Api\V1\UserNotificationsController@dest…
   - Deleta a notificação pelo id.
 
