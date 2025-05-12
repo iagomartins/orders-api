@@ -56,6 +56,8 @@ class UserController extends Controller
                 'message'=> 'Login successful!',
                 'user' => $user,
             ];
+        } else {
+            return response()->json(['message'=> 'Invalid credentials!'], 404);
         }
     }
 }
