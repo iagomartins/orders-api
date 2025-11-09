@@ -21,8 +21,22 @@ class StoreUserNotificationsRequest extends FormRequest
      */
     public function rules(): array
     {
+        // Check the URI path to determine which method is being called
+        $uri = $this->path();
+        $actionName = $this->route()->getActionName();
+        
+        // For getNotificationsByUser - only needs user_id
+        if ($uri === 'api/v1/showUserNotifications' || 
+            str_contains($actionName, 'getNotificationsByUser')) {
+            return [
+                'user_id' => 'required|integer|exists:users,id',
+            ];
+        }
+        
+        // For store (creating notifications) - needs user_id and message
         return [
-            //
+            'user_id' => 'required|integer|exists:users,id',
+            'message' => 'required|string|max:1000',
         ];
     }
 }

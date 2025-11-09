@@ -9,7 +9,7 @@ Route::post('/authenticate', [UserController::class, 'createAccessToken']);
 Route::group(['prefix'=> 'v1', 'middleware' => 'auth:sanctum'], function () {
     Route::apiResource('orders', TravelOrdersController::class);
     Route::apiResource('users', UserController::class);
-    Route::post('/userLogin', [UserController::class, 'login']);
+    Route::post('/userLogin', [UserController::class, 'login'])->name('userLogin');
     Route::post('/filterOrders', [TravelOrdersController::class, 'showOrdersByFilters']);
     Route::post('/ordersByUser', [TravelOrdersController::class, 'showOrdersByUser']);
     Route::apiResource('notifications', UserNotificationsController::class);
